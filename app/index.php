@@ -37,8 +37,8 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
 
   $app->group('/productos', function (RouteCollectorProxy $group) {
     $group->get('[/]', \ProductoController::class . ':TraerTodos');
-    $group->get('/rol/{rol}', \UsuarioController::class . ':TraerTodos');
-    $group->get('/tipo/{tipo}', \UsuarioController::class . ':TraerTodos');
+    $group->get('/rol/{rol}', \ProductoController::class . ':TraerTodos');
+    $group->get('/tipo/{tipo}', \ProductoController::class . ':TraerTodos');
     $group->get('/{producto}', \ProductoController::class . ':TraerUno');
     $group->post('[/]', \ProductoController::class . ':CargarUno');
     $group->post('/delete', \ProductoController::class . ':BorrarUno');
