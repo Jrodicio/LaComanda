@@ -45,7 +45,7 @@ class Usuario
     public static function obtenerRol($rol)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, nombre, usuario, clave, rol, estado FROM usuarios WHERE estado <> 'eliminado' AND rol= :rol");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, nombre, usuario, clave, rol, estado FROM usuarios WHERE estado <> 'eliminado' AND rol = :rol");
         $consulta->bindValue(':rol', $rol, PDO::PARAM_STR);
         $consulta->execute();
 
