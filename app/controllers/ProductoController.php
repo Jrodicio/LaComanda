@@ -68,22 +68,17 @@ class ProductoController extends Producto implements IApiUsable
 
     public function TraerTodos($request, $response, $args)
     {
-        var_dump($args);
+
         if(isset($args['rolResponsable']))
         {
-            echo "Entro en ROL:";
-            echo $args['rolResponsable'];
             $lista = Producto::obtenerRol($args['rolResponsable']);
         }
         elseif(isset($args['tipo']))
         {
-            echo "Entro en TIPO:";
-            echo $args['tipo'];
             $lista = Producto::obtenerTipo($args['tipo']);
         }
         else
         {
-            echo "Entro en todos:";
             $lista = Producto::obtenerTodos();
         }
         $payload = json_encode(array("listaProducto" => $lista));
