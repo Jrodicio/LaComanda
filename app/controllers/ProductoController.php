@@ -1,42 +1,43 @@
 <?php
-require_once './models/Usuario.php';
+require_once './models/Producto.php';
 require_once './interfaces/IApiUsable.php';
 
-class UsuarioController extends Usuario implements IApiUsable
+class ProductoController extends Producto implements IApiUsable
 {
     public function CargarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
 
-        if(isset($parametros['nombre'],$parametros['usuario'],$parametros['clave'],$parametros['rol']))
+        if(isset($parametros['descripcion'],$parametros['tipo'],$parametros['rolResponsable'],$parametros['precio']))
         {
-            $nombre = $parametros['nombre'];
-            $usuario = $parametros['usuario'];
-            $clave = $parametros['clave'];
-            $rol = $parametros['rol'];
+            $descripcion = $parametros['descripcion'];
+            $tipo = $parametros['tipo'];
+            $rolResponsable = $parametros['rolResponsable'];
+            $precio = $parametros['precio'];
             $retorno = false;
 
-            // Creamos el usuario
-            $usr = new Usuario();
-            $usr->nombre = $nombre;
-            $usr->usuario = $usuario;
-            $usr->clave = $clave;
-            $usr->rol = $rol;
+            // Creamos el producto
+            $producto = new Producto();
+            $producto->descripcion = $descripcion;
+            $producto->tipo = $tipo;
+            $producto->rolResponsable = $rolResponsable;
+            $producto->precio = $precio;
 
-            if($usr->esValido())
+            if($producto->esValido())
             {
-                $retorno = $usr->crear();    
+                $retorno = $producto->crear();
             }
 
             if($retorno)
             {
-                $mensaje = "Usuario $retorno creado con exito";
-                $usr->id = $retorno;
+                $mensaje = "Producto $retorno creado con exito";
+                $producto->id = $retorno;
             }
             else
             {
                 $mensaje = "Error";
             }
+
         }   
         else
         {
@@ -51,11 +52,11 @@ class UsuarioController extends Usuario implements IApiUsable
 
     public function TraerUno($request, $response, $args)
     {
-        if(isset($args['usuario']))
+        if(isset($args['descripcion']))
         {
-            $usr = $args['usuario'];
-            $usuario = Usuario::obtenerUno($usr);
-            $payload = json_encode($usuario);
+            $descripcion = $args['descripcion'];
+            $producto = Producto::obtenerUno($descripcion);
+            $payload = json_encode($producto);
         }
         else
         {
@@ -68,9 +69,13 @@ class UsuarioController extends Usuario implements IApiUsable
 
     public function TraerTodos($request, $response, $args)
     {
-        if(isset($args['rol']))
+        if(isset($args['rolResponsable']))
         {
-            $lista = Usuario::obtenerRol($args['rol']);
+            $lista = Producto::obtenerRol($args['rolResponsable']);
+        }
+        elseif(isset($arg['tipo']))
+        {
+            $lista = Producto::obtenerTipo($args['tipo']);
         }
         else
         {
@@ -86,31 +91,28 @@ class UsuarioController extends Usuario implements IApiUsable
     {
         $parametros = $request->getParsedBody();
 
-        if(isset($parametros['id'],$parametros['usuario'],$parametros['nombre'],$parametros['clave'],$parametros['rol']))
+        if(isset($parametros['id'],$parametros['descripcion'],$parametros['tipo'],$parametros['rolResponsable'],$parametros['precio']))
         {
             $id = $parametros['id'];
-            $usuario = $parametros['usuario'];
-            $nombre = $parametros['nombre'];
-            $clave = $parametros['clave'];
-            $rol = $parametros['rol'];
+            $descripcion = $parametros['descripcion'];
+            $tipo = $parametros['tipo'];
+            $rolResponsable = $parametros['rolResponsable'];
+            $precio = $parametros['precio'];
     
-            $usr = new Usuario();
-            $usr->id = $id;
-            $usr->usuario = $usuario;
-            $usr->clave = $clave;
-            $usr->nombre = $nombre;
-            $usr->rol = $rol;
+            $producto = new Producto();
+            $producto->id = $id;
+            $producto->usuario = $usuario;
+            $producto->clave = $clave;
+            $producto->nombre = $nombre;
+            $producto->rol = $rol;
 
-            if($usr->esValido())
+            if ($producto->modificar()) 
             {
-                if ($usr->modificar()) 
-                {
-                    $mensaje = "Se actualizó el usuario";
-                }
-                else
-                {
-                    $mensaje = "No se pudo actualizar el usuario";
-                }
+                $mensaje = "Se actualizó el usuario";
+            }
+            else
+            {
+                $mensaje = "No se pudo actualizar el usuario";
             }
         }
         else
@@ -130,7 +132,7 @@ class UsuarioController extends Usuario implements IApiUsable
         if(isset($parametros['usuarioId']))
         {
             $usuarioId = $parametros['usuarioId'];
-            $borrados = Usuario::borrar($usuarioId);
+            $borrados = Usuario::borrarUsuario($usuarioId);
             
             if($borrados == 1)
             {

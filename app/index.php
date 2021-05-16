@@ -33,6 +33,14 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->post('/modificar', \UsuarioController::class . ':ModificarUno');
   });
 
+  $app->group('/productos', function (RouteCollectorProxy $group) {
+    $group->get('[/]', \ProductoController::class . ':TraerTodos');
+    $group->get('/{producto}', \ProductoController::class . ':TraerUno');
+    $group->post('[/]', \ProductoController::class . ':CargarUno');
+    $group->post('/delete', \ProductoController::class . ':BorrarUno');
+    $group->post('/modificar', \ProductoController::class . ':ModificarUno');
+  });
+
   
 
 

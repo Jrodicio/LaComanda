@@ -9,10 +9,10 @@ class Usuario
     public $rol;
     public $estado;
     
-    public function crearUsuario()
+    public function crear()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $usuarioExistente = Usuario::obtenerUsuario($this->usuario);
+        $usuarioExistente = Usuario::obtenerUno($this->usuario);
 
         if(isset($usuarioExistente->id))
         {
@@ -42,17 +42,27 @@ class Usuario
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
     }
 
-    public static function obtenerUsuario($usuario)
+    public static function obtenerRol($rol)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, nombre, usuario, clave, rol, estado FROM usuarios WHERE usuario = :usuario AND estado <> 'eliminado' LIMIT 1");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, nombre, usuario, clave, rol, estado FROM usuarios WHERE estado <> 'eliminado' AND rol= :rol");
+        $consulta->bindValue(':rol', $rol, PDO::PARAM_STR);
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
+    }
+
+    public static function obtenerUno($usuario)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, nombre, usuario, clave, rol, estado FROM usuarios WHERE usuario = :usuario LIMIT 1");
         $consulta->bindValue(':usuario', $usuario, PDO::PARAM_STR);
         $consulta->execute();
 
         return $consulta->fetchObject('Usuario');
     }
 
-    public function modificarUsuario()
+    public function modificar()
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET usuario = :usuario, clave = :clave, nombre = :nombre WHERE id = :id AND estado <> 'eliminado'");
@@ -65,7 +75,7 @@ class Usuario
         return $consulta->rowCount();
     }
 
-    public function borrarUsuario()
+    public function borrar()
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET estado = 'eliminado' WHERE id = :id and estado <> 'eliminado'");
@@ -89,7 +99,7 @@ class Usuario
 
     public static function verificarCredenciales($usuario, $clave)
     {
-        $usuarioObtenido = Usuario::obtenerUsuario($usuario);
+        $usuarioObtenido = Usuario::obtenerUno($usuario);
 
         if(isset($usuarioObtenido->id))
         {
@@ -100,6 +110,11 @@ class Usuario
         }
         return false;
     }  
+
+    public function esValido()
+    {
+        return (strlen($this->nombre) > 3 && strlen($this->usuario) > 6 && strlen($this->clave) > 6 && in_array($this->rol,array("bartender","cervecero","cocinero","mozo","socio")));
+    }
 }
 
 ?>
