@@ -75,7 +75,7 @@ class ProductoController extends Producto implements IApiUsable
             echo $args['rolResponsable'];
             $lista = Producto::obtenerRol($args['rolResponsable']);
         }
-        elseif(isset($arg['tipo']))
+        elseif(isset($args['tipo']))
         {
             echo "Entro en TIPO:";
             echo $args['tipo'];
