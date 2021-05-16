@@ -15,6 +15,7 @@ require_once './db/AccesoDatos.php';
 // require_once './middlewares/Logger.php';
 
 require_once './controllers/UsuarioController.php';
+require_once './controllers/ProductoController.php';
 
 // Instantiate App
 $app = AppFactory::create();
