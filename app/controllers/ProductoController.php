@@ -37,7 +37,6 @@ class ProductoController extends Producto implements IApiUsable
             {
                 $mensaje = "Error";
             }
-
         }   
         else
         {
@@ -79,9 +78,9 @@ class ProductoController extends Producto implements IApiUsable
         }
         else
         {
-            $lista = Usuario::obtenerTodos();
+            $lista = Producto::obtenerTodos();
         }
-        $payload = json_encode(array("listaUsuario" => $lista));
+        $payload = json_encode(array("listaProducto" => $lista));
 
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
@@ -101,23 +100,23 @@ class ProductoController extends Producto implements IApiUsable
     
             $producto = new Producto();
             $producto->id = $id;
-            $producto->usuario = $usuario;
-            $producto->clave = $clave;
-            $producto->nombre = $nombre;
-            $producto->rol = $rol;
+            $producto->descripcion = $descripcion;
+            $producto->tipo = $tipo;
+            $producto->rolResponsable = $rolResponsable;
+            $producto->precio = $precio;
 
             if ($producto->modificar()) 
             {
-                $mensaje = "Se actualizó el usuario";
+                $mensaje = "Se actualizó el producto";
             }
             else
             {
-                $mensaje = "No se pudo actualizar el usuario";
+                $mensaje = "No se pudo actualizar el producto";
             }
         }
         else
         {
-            $mensaje = "Faltan datos [id-usuario-nombre-clave]";
+            $mensaje = "Faltan datos";
         }
 
         $payload = json_encode(array("mensaje" => $mensaje));
@@ -129,22 +128,21 @@ class ProductoController extends Producto implements IApiUsable
     public function BorrarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
-        if(isset($parametros['usuarioId']))
+        if(isset($parametros['productoId']))
         {
-            $usuarioId = $parametros['usuarioId'];
-            $borrados = Usuario::borrarUsuario($usuarioId);
+            $productoId = $parametros['productoId'];
+            $borrados = Producto::borrar($productoId);
             
-            if($borrados == 1)
-            {
-                $mensaje = "Usuario borrado con exito";
-            }
-            else if ($borrados == 0)
-            {
-                $mensaje = "No se encontró usuario que borrar";
-            }
-            else
-            {
-                $mensaje = "Se borro mas de un usuario, CORRE";
+            switch ($borrados) {
+                case 0:
+                    $mensaje = "No se encontró producto que borrar";
+                    break;
+                case 1:
+                    $mensaje = "Producto borrado con exito";
+                    break;
+                default:
+                    $mensaje = "Se borro mas de un producto, CORRE";
+                    break;
             }
         }
         else
@@ -154,27 +152,6 @@ class ProductoController extends Producto implements IApiUsable
 
         $payload = json_encode(array("mensaje" => $mensaje));
         
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
-    }
-
-    public function Loguear($request, $response, $args)
-    {
-        $parametros = $request->getParsedBody();
-
-        $usuario = $parametros['usuario'];
-        $clave = $parametros['clave'];
-
-        if(Usuario::verificarCredenciales($usuario, $clave))
-        {
-          $payload = json_encode(array("mensaje" => "Usuario logueado con exito."));
-        }
-        else
-        {
-          $payload = json_encode(array("mensaje" => "Usuario o clave incorrecto."));
-        }
-
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }

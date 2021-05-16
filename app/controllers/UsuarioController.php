@@ -132,17 +132,16 @@ class UsuarioController extends Usuario implements IApiUsable
             $usuarioId = $parametros['usuarioId'];
             $borrados = Usuario::borrar($usuarioId);
             
-            if($borrados == 1)
-            {
-                $mensaje = "Usuario borrado con exito";
-            }
-            else if ($borrados == 0)
-            {
-                $mensaje = "No se encontró usuario que borrar";
-            }
-            else
-            {
-                $mensaje = "Se borro mas de un usuario, CORRE";
+            switch ($borrados) {
+                case 0:
+                    $mensaje = "No se encontró usuario que borrar";
+                    break;
+                case 1:
+                    $mensaje = "Usuario borrado con exito";
+                    break;
+                default:
+                    $mensaje = "Se borro mas de un usuario, CORRE";
+                    break;
             }
         }
         else
