@@ -35,7 +35,7 @@ class Producto
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, descripcion, tipo, rolResponsable, precio, estado FROM productos");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, descripcion, tipo, rolResponsable, precio, estado FROM productos WHERE estado <> 'eliminado'");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
@@ -44,7 +44,7 @@ class Producto
     public static function obtenerRol($rolResponsable)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, descripcion, tipo, rolResponsable, precio, estado FROM productos WHERE rolResponsable = :rolResponsable");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, descripcion, tipo, rolResponsable, precio, estado FROM productos WHERE rolResponsable = :rolResponsable AND estado <> 'eliminado'");
         $consulta->bindValue(':rolResponsable', $rolResponsable, PDO::PARAM_STR);
         $consulta->execute();
 
@@ -54,18 +54,18 @@ class Producto
     public static function obtenerTipo($tipo)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, descripcion, tipo, rolResponsable, precio, estado FROM productos WHERE tipo = :tipo");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, descripcion, tipo, rolResponsable, precio, estado FROM productos WHERE tipo = :tipo AND estado <> 'eliminado'");
         $consulta->bindValue(':tipo', $tipo, PDO::PARAM_STR);
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
     }
 
-    public static function obtenerUno($descripcion)
+    public static function obtenerUno($clave)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, descripcion, tipo, rolResponsable, precio, estado FROM productos WHERE descripcion = :descripcion AND estado <> 'eliminado' LIMIT 1");
-        $consulta->bindValue(':descripcion', $descripcion, PDO::PARAM_STR);
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, descripcion, tipo, rolResponsable, precio, estado FROM productos WHERE (id = :clave OR descripcion = :clave) AND estado <> 'eliminado' LIMIT 1");
+        $consulta->bindValue(':clave', $clave, PDO::PARAM_STR);
         $consulta->execute();
 
         return $consulta->fetchObject('Producto');
