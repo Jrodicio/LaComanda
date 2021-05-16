@@ -14,16 +14,20 @@ class UsuarioController extends Usuario implements IApiUsable
             $usuario = $parametros['usuario'];
             $clave = $parametros['clave'];
             $rol = $parametros['rol'];
-    
-            // Creamos el usuario
-            $usr = new Usuario();
-            $usr->nombre = $nombre;
-            $usr->usuario = $usuario;
-            $usr->clave = $clave;
-            $usr->rol = $rol;
-                
-            $retorno = $usr->crearUsuario();
-    
+            $retorno = false;
+
+            if(strlen($nombre) > 3 && strlen($usuario) > 6 && strlen($clave) > 6 && in_array($rol,array("bartender","cervecero","cocinero","mozo","socio")))
+            {
+                // Creamos el usuario
+                $usr = new Usuario();
+                $usr->nombre = $nombre;
+                $usr->usuario = $usuario;
+                $usr->clave = $clave;
+                $usr->rol = $rol;
+                    
+                $retorno = $usr->crearUsuario();    
+            }
+
             if($retorno)
             {
                 $mensaje = "Usuario $retorno creado con exito";
@@ -47,10 +51,16 @@ class UsuarioController extends Usuario implements IApiUsable
 
     public function TraerUno($request, $response, $args)
     {
-        $usr = $args['usuario'];
-        echo $usr;
-        $usuario = Usuario::obtenerUsuario($usr);
-        $payload = json_encode($usuario);
+        if(isset($args['usuario']))
+        {
+            $usr = $args['usuario'];
+            $usuario = Usuario::obtenerUsuario($usr);
+            $payload = json_encode($usuario);
+        }
+        else
+        {
+            $payload = json_encode(array("mensaje" => "Faltan datos"));
+        }
 
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
