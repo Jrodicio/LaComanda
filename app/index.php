@@ -45,6 +45,14 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->post('/modificar', \ProductoController::class . ':ModificarUno');
   });
 
+  $app->group('/mesa', function (RouteCollectorProxy $group) {
+    $group->get('[/]', \MesaController::class . ':TraerTodos');
+    $group->get('/{id}', \MesaController::class . ':TraerUno');
+    $group->post('[/]', \MesaController::class . ':CargarUno');
+    $group->post('/delete', \MesaController::class . ':BorrarUno');
+    $group->post('/modificar', \MesaController::class . ':ModificarUno');
+  });
+
   
 
 

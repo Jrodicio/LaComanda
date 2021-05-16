@@ -64,8 +64,9 @@ class Producto
     public static function obtenerUno($clave)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, descripcion, tipo, rolResponsable, precio, estado FROM productos WHERE (id = :clave OR descripcion = :clave) AND estado <> 'eliminado' LIMIT 1");
-        $consulta->bindValue(':clave', $clave, PDO::PARAM_STR);
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, descripcion, tipo, rolResponsable, precio, estado FROM productos WHERE (id = :id OR descripcion = :descripcion) AND estado <> 'eliminado' LIMIT 1");
+        $consulta->bindValue(':id', $clave, PDO::PARAM_STR);
+        $consulta->bindValue(':descripcion', $clave, PDO::PARAM_STR);
         $consulta->execute();
 
         return $consulta->fetchObject('Producto');
