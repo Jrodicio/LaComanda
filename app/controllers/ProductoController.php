@@ -68,6 +68,7 @@ class ProductoController extends Producto implements IApiUsable
 
     public function TraerTodos($request, $response, $args)
     {
+        var_dump($args);
         if(isset($args['rolResponsable']))
         {
             echo "Entro en ROL:";
