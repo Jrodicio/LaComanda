@@ -75,12 +75,12 @@ class Usuario
         return $consulta->rowCount();
     }
 
-    public static function borrar($id)
+    public function borrar()
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET estado = 'eliminado' WHERE id = :id and estado <> 'eliminado'");
 
-        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->bindValue(':id', $this->id, PDO::PARAM_INT);
         $consulta->execute();
         
         return $consulta->rowCount();

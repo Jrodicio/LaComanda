@@ -127,10 +127,12 @@ class UsuarioController extends Usuario implements IApiUsable
     public function BorrarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
-        if(isset($parametros['usuarioId']))
+        if(isset($parametros['usuario']))
         {
-            $usuarioId = $parametros['usuarioId'];
-            $borrados = Usuario::borrar($usuarioId);
+            $usuario = $parametros['usuario'];
+            $usr = Usuario::obtenerUno($usuario);
+            
+            $borrados = $usr->borrar();
             
             switch ($borrados) {
                 case 0:
@@ -156,7 +158,7 @@ class UsuarioController extends Usuario implements IApiUsable
           ->withHeader('Content-Type', 'application/json');
     }
 
-    public function Loguear($request, $response, $args)
+    public static function Loguear($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
 
@@ -165,15 +167,20 @@ class UsuarioController extends Usuario implements IApiUsable
 
         if(Usuario::verificarCredenciales($usuario, $clave))
         {
-          $payload = json_encode(array("mensaje" => "Usuario logueado con exito."));
+            $empleado = Usuario::obtenerUno($usuario);
+            $token = AuthJWT::CrearToken($empleado);
+
+            $objResponse = array('token'=>$token, 'usuario'=>$empleado->usuario, 'rol'=>$empleado->rol);
+            $codResponse = 200;
         }
         else
         {
-          $payload = json_encode(array("mensaje" => "Usuario o clave incorrecto."));
+            $objResponse = array('respuesta'=>'Usuario o clave incorrecta');
+            $codResponse = 401;
         }
 
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json');
+        $response->getBody()->write(json_encode($objResponse));
+        return $response->withStatus($codResponse);
     }
 }
 ?>

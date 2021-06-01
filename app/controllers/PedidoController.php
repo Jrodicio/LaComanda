@@ -1,34 +1,47 @@
 <?php
-require_once './models/Mesa.php';
+require_once './models/Pedido.php';
+require_once './models/Comanda.php';
 require_once './interfaces/IApiUsable.php';
 
-class MesaController extends Mesa implements IApiUsable
+class PedidoController extends Pedido implements IApiUsable
 {
     public function CargarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
 
-        if(isset($parametros['codigo'], $parametros['estado']))
+        if(isset($parametros['idProducto'], $parametros['cantidad'], $parametros['minutosEstimados'], $parametros['idMozo'], $parametros['idComanda']))
         {
-            $codigo = $parametros['codigo'];
-            $estado = $parametros['estado'];
-
+            $idProducto = $parametros['idProducto'];
+            $cantidad = $parametros['cantidad'];
+            $minutosEstimados = $parametros['minutosEstimados'];
+            $idMozo = $parametros['idMozo'];
+            $idComanda = $parametros['idComanda'];
             $retorno = false;
 
-            // Creamos la mesa
-            $mesa = new Mesa();
-            $mesa->codigo = $codigo;
-            $mesa->estado = $estado;
+            // Creamos el pedido
+            $pedido = new Pedido();
+            $pedido->generarCodigo();
+            $pedido->idComanda = $idComanda;
+            $pedido->idProducto = $idProducto;
+            $pedido->cantidad = $cantidad;
+            $pedido->idMozo = $idMozo;
+            
+            $producto = Producto::obtenerUno($pedido->idProducto);
+            $pedido->subtotal = floatval($producto->precio) * $pedido->cantidad;
 
-            if($mesa->esValido())
+            $pedido->tsIngresado = date("Y-m-d H:i:s");
+            $pedido->tsEstimado = $pedido->tsIngresado = date("Y-m-d H:i:s",strtotime($pedido->tsIngresado ." + $minutosEstimados minute"));
+
+
+            if($pedido->esValido())
             {
-                $retorno = $mesa->crear();
+                $retorno = $pedido->crear();
             }
 
             if($retorno)
             {
-                $mensaje = "Mesa $retorno creada con exito";
-                $mesa->id = $retorno;
+                $mensaje = "Pedido [$pedido->codigo] creado con exito";
+                $pedido->id = $retorno;
             }
             else
             {
@@ -51,8 +64,8 @@ class MesaController extends Mesa implements IApiUsable
         if(isset($args['codigo']))
         {
             $codigo = $args['codigo'];
-            $mesa = Mesa::obtenerUno($codigo);
-            $payload = json_encode($mesa);
+            $pedido = Pedido::obtenerUno($codigo);
+            $payload = json_encode($pedido);
         }
         else
         {
@@ -65,9 +78,9 @@ class MesaController extends Mesa implements IApiUsable
 
     public function TraerTodos($request, $response, $args)
     {
-        $lista = Mesa::obtenerTodos();
+        $lista = Pedido::obtenerTodos();
 
-        $payload = json_encode(array("listaMesa" => $lista));
+        $payload = json_encode(array("listaPedido" => $lista));
 
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
@@ -82,17 +95,24 @@ class MesaController extends Mesa implements IApiUsable
             $codigo = $parametros['codigo'];
             $estado = $parametros['estado'];
     
-            $mesa = Mesa::obtenerUno($codigo);
-            $mesa->estado = $estado;
+            $pedido = Pedido::obtenerUno($codigo);
+            $pedido->estado = $estado;
 
-            if ($mesa->modificarEstado()) 
+            if($pedido->esValido())
             {
-                $mensaje = "Se actualizó la mesa";
+                if ($pedido->modificarEstado()) 
+                {
+                    $mensaje = "Se actualizó el pedido";
+                }
+                else
+                {
+                    $mensaje = "No se pudo actualizar el pedido";
+                }
             }
             else
             {
-                $mensaje = "No se pudo actualizar la mesa";
-            }
+                $mensaje = "El estado es inválido";
+            } 
         }
         else
         {
@@ -111,19 +131,19 @@ class MesaController extends Mesa implements IApiUsable
         if(isset($parametros['codigo']))
         {
             $codigo = $parametros['codigo'];
-            $mesa = Mesa::obtenerUno($codigo);
+            $pedido = Pedido::obtenerUno($codigo);
 
-            $borrados = $mesa->borrar();
+            $borrados = $pedido->cancelar();
             
             switch ($borrados) {
                 case 0:
-                    $mensaje = "No se encontró mesa que borrar";
+                    $mensaje = "No se encontró pedido para cancelar";
                     break;
                 case 1:
-                    $mensaje = "Mesa borrado con exito";
+                    $mensaje = "Pedido cancelado con exito";
                     break;
                 default:
-                    $mensaje = "Se borro mas de una mesa, CORRE";
+                    $mensaje = "Se canceló mas de un pedido, RUN";
                     break;
             }
         }
