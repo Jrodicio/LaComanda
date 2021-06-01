@@ -26,7 +26,9 @@ $app = AppFactory::create();
 // Add error middleware
 $app->addErrorMiddleware(true, true, true);
 
-$app->post('/login', \UsuarioController::class . ':Loguear');
+$app->group('/login', function (RouteCollectorProxy $group) {
+    $group->post('[/]', \UsuarioController::class . ':Loguear');
+});
 
 // Routes
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
