@@ -12,7 +12,7 @@ use Slim\Routing\RouteContext;
 require __DIR__ . '/../vendor/autoload.php';
 
 
-require_once './models/VerificacionJWT.php';
+require_once './models/VerificacionMW.php';
 require_once './models/AuthJWT.php';
 
 require_once './db/AccesoDatos.php';
