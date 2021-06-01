@@ -1,25 +1,25 @@
 <?php
 class VerificacionMW
 {
-	public function VerificarToken($request, $response, $next)
+	public function VerificarToken($request = null, $response = null, $args = null)
     {  
-		$objResponse = new stdclass();
-		$objResponse->respuesta = "";
-		$arrayConToken = $request->getHeader('token');
-		$token = $arrayConToken[0];
-		
+		var_dump($request);
+		var_dump($response);
+		var_dump($args);
+		$header = $request->getHeaderLine('Authorization');
+		$token = trim(explode("Bearer", $header)[1]);
+
 		try 
         {
 			AuthJWT::verificarToken($token);
-			$objResponse->esValido = true;
+			$esValido = true;
 		} 
         catch (Exception $e) 
         {
-			$objResponse->excepcion = $e->getMessage();
-			$objResponse->esValido = false;
+			$esValido = false;
 		}
 		
-		if($objResponse->esValido)
+		if($esValido)
         {
 			$payload = AuthJWT::ObtenerData($token);
 			$request = $request->withAttribute('usuario', $payload);
@@ -27,20 +27,13 @@ class VerificacionMW
 		} 
         else 
         {
-			$objResponse->respuesta = "Por favor logueese para realizar esta accion";
-			$objResponse->elToken = $token;
+
 		}
-        
-        if($objResponse->respuesta != "") 
-        {
-			$nueva = $response->withJson($objResponse, 401);
-			return $nueva;
-        }
 
         return $response;
 	}
 
-	public function VerificarAdmin($request, $response, $next) 
+	public function VerificarAdmin($request, $handler)
     {
 		$objResponse = new stdclass();
 		$objResponse->respuesta = "";
@@ -64,7 +57,7 @@ class VerificacionMW
         return $response;
 	}
 
-	public function VerificarEmpleado($request, $response, $next)
+	public function VerificarEmpleado($request, $handler)
     {
 		$objResponse = new stdclass();
 		$objResponse->respuesta = "";
@@ -86,7 +79,7 @@ class VerificacionMW
         return $response;
 	}
 
-	public function VerificarMozo($request, $response, $next)
+	public function VerificarMozo($request, $handler)
     {
 		$objResponse = new stdclass();
 		$objResponse->respuesta = "";
