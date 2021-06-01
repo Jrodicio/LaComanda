@@ -40,11 +40,11 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->get('[/]', \UsuarioController::class . ':TraerTodos');
     $group->get('/rol/{rol}', \UsuarioController::class . ':TraerTodos');
     $group->get('/{usuario}', \UsuarioController::class . ':TraerUno');
-    $group->post('[/]', \UsuarioController::class . ':CargarUno');
+    $group->post('[/]', \UsuarioController::class . ':CargarUno')->add(\VerificacionMW::class . ':VerificarAdmin');
 //    $group->post('/login', \UsuarioController::class . ':Loguear');
     $group->post('/delete', \UsuarioController::class . ':BorrarUno');
     $group->post('/modificar', \UsuarioController::class . ':ModificarUno');
-  })->add(\VerificacionMW::class . ':VerificarAdmin')->add(\VerificacionMW::class . ':VerificarToken');
+  })->add(\VerificacionMW::class . ':VerificarToken');
 
   $app->group('/productos', function (RouteCollectorProxy $group) {
     $group->get('[/]', \ProductoController::class . ':TraerTodos')->add(\VerificacionMW::class . ':VerificarEmpleado');
