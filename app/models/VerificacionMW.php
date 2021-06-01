@@ -1,7 +1,7 @@
 <?php
 class VerificacionMW
 {
-	public function VerificarToken($request, $response, $next)
+	public static function VerificarToken($request, $response, $next)
     {  
 		$objResponse = new stdclass();
 		$objResponse->respuesta = "";
