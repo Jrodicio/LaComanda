@@ -11,14 +11,19 @@ use Slim\Routing\RouteContext;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+
+require_once './models/VerificacionJWT.php';
+require_once './models/AuthJWT.php';
+
 require_once './db/AccesoDatos.php';
-// require_once './middlewares/Logger.php';
 
 require_once './controllers/UsuarioController.php';
 require_once './controllers/ProductoController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
 require_once './controllers/ComandaController.php';
+
+
 
 // Instantiate App
 $app = AppFactory::create();
