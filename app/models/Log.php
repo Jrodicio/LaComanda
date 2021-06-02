@@ -14,10 +14,9 @@ class Log
     {
         $this->ts = date("Y-m-d H:i:s");
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO logs (id, ts, idUsuario, operacion, datos, tipoObjeto, idObjeto)
-                                                                SELECT :id, :ts, :idUsuario, :operacion, :datos, :tipoObjeto, :idObjeto");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO logs (ts, idUsuario, operacion, datos, tipoObjeto, idObjeto)
+                                                                SELECT :ts, :idUsuario, :operacion, :datos, :tipoObjeto, :idObjeto");
         
-        $consulta->bindValue(':id', $this->id, PDO::PARAM_STR);
         $consulta->bindValue(':ts', $this->ts, PDO::PARAM_STR);
         $consulta->bindValue(':idUsuario', $this->idUsuario, PDO::PARAM_STR);
         $consulta->bindValue(':operacion', $this->operacion, PDO::PARAM_STR);

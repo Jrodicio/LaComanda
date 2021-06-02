@@ -1771,7 +1771,7 @@
         },
         {
             "name": "slim/slim",
-            "version": "4.7.1",
+            "version": "3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
