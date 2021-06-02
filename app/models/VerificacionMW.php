@@ -1,39 +1,37 @@
 <?php
 class VerificacionMW
 {
-	public function VerificarToken($request, $response, $next)
+	public function VerificarToken($request, $handler)
     {  
-		$objResponse = new stdclass();
-		$objResponse->respuesta = "";
+
+		$response = $handler->handle($request);
+		
 		$arrayConToken = $request->getHeader('token');
 		$token = $arrayConToken[0];
 		
 		try 
         {
 			AuthJWT::verificarToken($token);
-			$objResponse->esValido = true;
+			$esValido = true;
 		} 
         catch (Exception $e) 
         {
-			$objResponse->excepcion = $e->getMessage();
-			$objResponse->esValido = false;
+			$esValido = false;
 		}
 		
-		if($objResponse->esValido)
+		if($esValido)
         {
 			$payload = AuthJWT::ObtenerData($token);
 			$request = $request->withAttribute('usuario', $payload);
-			$response = $next($request, $response);
 		} 
         else 
         {
-			$objResponse->respuesta = "Por favor logueese para realizar esta accion";
-			$objResponse->elToken = $token;
+			$respuesta = "Por favor logueese para realizar esta accion";
 		}
         
-        if($objResponse->respuesta != "") 
+        if(isset($respuesta))
         {
-			$nueva = $response->withJson($objResponse, 401);
+			$nueva = $response->withJson($response, 401);
 			return $nueva;
         }
 
