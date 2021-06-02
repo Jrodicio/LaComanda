@@ -28,10 +28,7 @@ require_once './controllers/ComandaController.php';
 // Instantiate App
 $app = AppFactory::create();
 
-
 $app->addErrorMiddleware(true, true, true);
-$app->addBodyParsingMiddleware();
-$app->addRoutingMiddleware();
 
 $app->group('/login', function (RouteCollectorProxy $group) {
     $group->post('[/]', \UsuarioController::class . ':Loguear');
