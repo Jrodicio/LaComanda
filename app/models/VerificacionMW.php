@@ -1,5 +1,9 @@
 <?php
 
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Psr7\Response as Response;
+
 class VerificacionMW
 {
 	
@@ -26,8 +30,7 @@ class VerificacionMW
 		} 
         else 
         {
-			$response = new Response();
-			$response->getBody()->write("Por favor logueese para realizar esta accion");
+			$response = new Response(401,"ERROR","Por favor logueese para realizar esta accion");
 		}
         		
         return $response;
