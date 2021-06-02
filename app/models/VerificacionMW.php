@@ -30,13 +30,21 @@ class VerificacionMW
 		} 
         else 
         {
-			$response = new Response(401,"ERROR","Por favor logueese para realizar esta accion");
+			$headers = [
+				"Content-Type" => "application/json"
+			];
+			
+			$body = array(
+				"ok" => false,
+				"message" => "Sesión vencida, vuelva a loguearse"
+			);
+			$response = new Response(401,$headers,$body);
 		}
         		
         return $response;
 	}
 
-	public function VerificarAdmin($request, $response, $next) 
+	public function VerificarAdmin($request, $handler) 
     {
 		$objResponse = new stdclass();
 		$objResponse->respuesta = "";
