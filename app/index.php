@@ -88,11 +88,10 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->post('/modificar', \ComandaController::class . ':ModificarUno')->add(\VerificacionMW::class . ':VerificarMozo');
 })->add(\VerificacionMW::class . ':VerificarToken');
 
-$app->get('[/]', function (Request $request, Response $response) {    
-    $response->getBody()->write("Slim Framework 4 PHP");
-    return $response;
-
-});
+// $app->get('[/]', function (Request $request, Response $response) {    
+//     $response->getBody()->write("Slim Framework 4 PHP");
+//     return $response;
+//});
 
 $app->run();
 ?>
