@@ -28,8 +28,16 @@ require_once './controllers/ComandaController.php';
 // Instantiate App
 $app = AppFactory::create();
 
-// Add error middleware
+
 $app->addErrorMiddleware(true, true, true);
+$app->addBodyParsingMiddleware();
+$app->addRoutingMiddleware();
+
+$app->get('[/]', function (Request $request, Response $response) {    
+  $response->getBody()->write("Slim Framework 4 PHP");
+  return $response;
+
+});
 
 $app->group('/login', function (RouteCollectorProxy $group) {
     $group->post('[/]', \UsuarioController::class . ':Loguear');
