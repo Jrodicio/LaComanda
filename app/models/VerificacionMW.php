@@ -32,6 +32,7 @@ class VerificacionMW
         {
 			$response = new Response();
 			$response->getBody()->write('Sesión inválida, vuelva a loguearse');
+			$response->withStatus(401);
 		}
         		
         return $response;
@@ -51,6 +52,7 @@ class VerificacionMW
 		{
 			$response = new Response();
 			$response->getBody()->write("Ud no tiene permisos para realizar esta acción");
+			$response->withStatus(401);
 		}
 
         return $response;
@@ -69,6 +71,7 @@ class VerificacionMW
 		{
 			$response = new Response();
 			$response->getBody()->write("Ud no tiene permisos para realizar esta acción");
+			$response->withStatus(401);
 		}
         
         return $response;
@@ -87,6 +90,7 @@ class VerificacionMW
 		{
 			$response = new Response();
 			$response->getBody()->write("Ud no tiene permisos para realizar esta acción");
+			$response->withStatus(401);
 		}
 
         return $response;
