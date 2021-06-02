@@ -30,15 +30,8 @@ class VerificacionMW
 		} 
         else 
         {
-			$headers = [
-				"Content-Type" => "application/json"
-			];
-			
-			$body = array(
-				"ok" => false,
-				"message" => "Sesión vencida, vuelva a loguearse"
-			);
-			$response = new Response(401,$headers,$body);
+			$response = new Response();
+			$response->getBody()->write('Sesión inválida, vuelva a loguearse');
 		}
         		
         return $response;
