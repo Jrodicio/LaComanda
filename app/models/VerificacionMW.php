@@ -45,62 +45,49 @@ class VerificacionMW
 
 		if($rol == "socio")
         {
-			$response = $next($request, $response);
+			$response = $handler->handle($request);
 		}
 		else
 		{
-			$objResponse->respuesta = "Ud no tiene permisos para realizar esta acción";
+			$response = new Response();
+			$response->getBody()->write("Ud no tiene permisos para realizar esta acción");
 		}
-        
-        if($objResponse->respuesta != "")
-        {
-			$nueva = $response->withJson($objResponse, 401);
-			return $nueva;
-        }
 
         return $response;
 	}
 
-	public function VerificarEmpleado($request, $response, $next)
+	public function VerificarEmpleado($request, $handler)
     {
 		$objResponse = new stdclass();
 		$objResponse->respuesta = "";
 		$rol = $request->getAttribute('usuario')->rol;
 		if(in_array($rol,array("bartender","cervecero","cocinero","mozo","socio"))) 
         {
-			$response = $next($request, $response);
+			$response = $handler->handle($request);
 		}
 		else
 		{
-			$objResponse->respuesta = "Solo habilitado para usuarios";
+			$response = new Response();
+			$response->getBody()->write("Ud no tiene permisos para realizar esta acción");
 		}
         
-        if($objResponse->respuesta != "") {
-			$nueva = $response->withJson($objResponse, 401);
-			return $nueva;
-        }
-
         return $response;
 	}
 
-	public function VerificarMozo($request, $response, $next)
+	public function VerificarMozo($request, $handler)
     {
 		$objResponse = new stdclass();
 		$objResponse->respuesta = "";
 		$rol = $request->getAttribute('usuario')->rol;
 		if($rol == "mozo" || $rol == "socio")
         {
-			$response = $next($request, $response);
+			$response = $handler->handle($request);
 		}
 		else
 		{
-			$objResponse->respuesta = "Solo habilitado para mozos";
+			$response = new Response();
+			$response->getBody()->write("Ud no tiene permisos para realizar esta acción");
 		}
-        
-        if($objResponse->respuesta != "") {
-			$nueva = $response->withJson($objResponse, 401);
-			return $nueva;
-        }
 
         return $response;
 	}
