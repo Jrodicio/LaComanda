@@ -1,11 +1,10 @@
 <?php
+
 class VerificacionMW
 {
+	
 	public function VerificarToken($request, $handler)
     {  
-
-		$response = $handler->handle($request);
-		
 		$arrayConToken = $request->getHeader('token');
 		$token = $arrayConToken[0];
 		
@@ -23,18 +22,14 @@ class VerificacionMW
         {
 			$payload = AuthJWT::ObtenerData($token);
 			$request = $request->withAttribute('usuario', $payload);
+			$response = $handler->handle($request);
 		} 
         else 
         {
-			$respuesta = "Por favor logueese para realizar esta accion";
+			$response = new Response();
+			$response->getBody()->write("Por favor logueese para realizar esta accion");
 		}
-        
-        if(isset($respuesta))
-        {
-			$nueva = $response->withJson($response, 401);
-			return $nueva;
-        }
-
+        		
         return $response;
 	}
 
