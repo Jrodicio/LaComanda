@@ -1,6 +1,8 @@
 <?php
 
-class Usuario
+use \Illuminate\Database\Eloquent\Model;
+
+class Usuario extends Model
 {
     public $id;
     public $nombre;
@@ -35,11 +37,15 @@ class Usuario
 
     public static function obtenerTodos()
     {
+        /*
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT id, nombre, usuario, clave, rol, estado FROM usuarios WHERE estado <> 'eliminado'");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
+        */
+        $arrayUsuarios = Usuario::all();
+        return $arrayUsuarios->fetchAll(PDO::FETCH_CLASS, 'Usuario');
     }
 
     public static function obtenerRol($rol)
