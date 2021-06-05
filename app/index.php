@@ -15,6 +15,28 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 require_once __DIR__ . '/../vendor/autoload.php';
 
 echo __DIR__ . '/../vendor/autoload.php';
+
+
+require_once './models/VerificacionMW.php';
+require_once './models/AuthJWT.php';
+require_once './db/AccesoDatos.php';
+
+require_once './controllers/UsuarioController.php';
+require_once './controllers/ProductoController.php';
+require_once './controllers/MesaController.php';
+require_once './controllers/PedidoController.php';
+require_once './controllers/ComandaController.php';
+
+
+
+// Instantiate App
+$app = AppFactory::create();
+$app->setBasePath("/app");
+$app->addBodyParsingMiddleware();
+$app->addRoutingMiddleware();
+// Add error middleware
+$app->addErrorMiddleware(true, true, true);
+
 $capsule = new Capsule();
 
 $capsule->addConnection([
@@ -27,21 +49,6 @@ $capsule->addConnection([
     'collation' => 'utf8_unicode_ci',
     'prefix'    => '',
 ]);
-
-require_once './models/VerificacionMW.php';
-require_once './models/AuthJWT.php';
-require_once './db/AccesoDatos.php';
-
-require_once './controllers/UsuarioController.php';
-require_once './controllers/ProductoController.php';
-require_once './controllers/MesaController.php';
-require_once './controllers/PedidoController.php';
-require_once './controllers/ComandaController.php';
-
-// Instantiate App
-$app = AppFactory::create();
-
-$app->addErrorMiddleware(true, true, true);
 
 $app->group('/login', function (RouteCollectorProxy $group) {
     $group->post('[/]', \UsuarioController::class . ':Loguear');
