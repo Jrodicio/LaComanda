@@ -47,6 +47,7 @@ class Usuario extends Model
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
         */
         $arrayUsuarios = Usuario::all();
+        var_dump($arrayUsuarios);
         return $arrayUsuarios;
     }
 
