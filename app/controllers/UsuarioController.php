@@ -1,5 +1,7 @@
 <?php
 
+require_once './interfaces/Usuario.php';
+
 use App\Models\Usuario;
 
 require_once './interfaces/IApiUsable.php';
