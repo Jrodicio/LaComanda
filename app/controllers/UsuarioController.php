@@ -1,12 +1,10 @@
 <?php
 
-require_once './models/Usuario.php';
-
 use App\Models\Usuario;
 
 require_once './interfaces/IApiUsable.php';
 
-class UsuarioController extends Usuario implements IApiUsable
+class UsuarioController implements IApiUsable
 {
     public function CargarUno($request, $response, $args)
     {
