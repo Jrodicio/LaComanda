@@ -11,7 +11,7 @@ use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Slim\Routing\RouteContext;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once './vendor/autoload.php';
 require_once 'database.php';
 
 require_once './models/VerificacionMW.php';
