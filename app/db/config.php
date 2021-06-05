@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Database\Capsule\Manager as Capsule;
 $capsule = new Capsule;
 
 $capsule->addConnection([
@@ -12,7 +12,5 @@ $capsule->addConnection([
     'collation' => 'utf8_unicode_ci',
     'prefix'    => '',
 ]);
-
-$capsule->bootEloquent();
 
 ?>
