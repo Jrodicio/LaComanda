@@ -8,7 +8,7 @@ interface Lock
      * Attempt to acquire the lock.
      *
      * @param  callable|null  $callback
-     * @return mixed
+     * @return bool
      */
     public function get($callback = null);
 
@@ -17,28 +17,14 @@ interface Lock
      *
      * @param  int  $seconds
      * @param  callable|null  $callback
-     * @return mixed
+     * @return bool
      */
     public function block($seconds, $callback = null);
 
     /**
      * Release the lock.
      *
-     * @return bool
-     */
-    public function release();
-
-    /**
-     * Returns the current owner of the lock.
-     *
-     * @return string
-     */
-    public function owner();
-
-    /**
-     * Releases this lock in disregard of ownership.
-     *
      * @return void
      */
-    public function forceRelease();
+    public function release();
 }
