@@ -1,6 +1,6 @@
 <?php
 
-require_once './interfaces/Usuario.php';
+require_once './models/Usuario.php';
 
 use App\Models\Usuario;
 
