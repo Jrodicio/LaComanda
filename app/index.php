@@ -12,7 +12,7 @@ use Slim\Routing\RouteContext;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once './vendor/autoload.php';
 
 $capsule = new Capsule;
 
