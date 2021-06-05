@@ -14,9 +14,6 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-echo __DIR__ . '/../vendor/autoload.php';
-
-
 require_once './models/VerificacionMW.php';
 require_once './models/AuthJWT.php';
 require_once './db/AccesoDatos.php';
