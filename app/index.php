@@ -1,7 +1,5 @@
 <?php
 
-
-
 error_reporting(-1);
 ini_set('display_errors', 1);
 date_default_timezone_set('America/Argentina/Buenos_Aires');
@@ -12,11 +10,8 @@ use Slim\Psr7\Response;
 use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Slim\Routing\RouteContext;
-use Illuminate\Database\Capsule\Manager as Capsule;
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
-require_once 'database.php';
 
 require_once './models/VerificacionMW.php';
 require_once './models/AuthJWT.php';
@@ -27,7 +22,6 @@ require_once './controllers/ProductoController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
 require_once './controllers/ComandaController.php';
-
 
 // Instantiate App
 $app = AppFactory::create();
