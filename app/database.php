@@ -14,5 +14,6 @@
     'prefix'    => ''
     ]);
 
+    echo "QUE PASO";
     $capsule->bootEloquent();
 ?>
