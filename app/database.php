@@ -5,7 +5,7 @@
 
     $capsule->addConnection([
     'driver'    => 'mysql',
-    'host'      => 'remotemysql.com,3306',
+    'host'      => 'remotemysql.com:3306',
     'database'  => 'Q2VBpO03Vq',
     'username'  => 'Q2VBpO03Vq',
     'password'  => '8wTUfrR8U4',
