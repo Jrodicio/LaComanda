@@ -12,6 +12,7 @@ use Slim\Routing\RouteCollectorProxy;
 use Slim\Routing\RouteContext;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once 'database.php';
 
 require_once './models/VerificacionMW.php';
 require_once './models/AuthJWT.php';
@@ -23,18 +24,6 @@ require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
 require_once './controllers/ComandaController.php';
 
-use Illuminate\Database\Capsule\Manager as Capsule;
-$capsule = new Capsule();
-$capsule->addConnection([
-  'driver' => 'mysql',
-  'host' => 'remotemysql.com:3306',
-  'database' => 'Q2VBpO03Vq',
-  'username' => 'Q2VBpO03Vq',
-  'password' => '8wTUfrR8U4',
-  'charset' => 'utf8',
-  'collation' => 'utf8_unicode_ci',
-  'prefix' => ''
-]);
 
 // Instantiate App
 $app = AppFactory::create();
