@@ -1,5 +1,9 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+echo "-HOLA";
+require_once 'database.php';
+
 error_reporting(-1);
 ini_set('display_errors', 1);
 date_default_timezone_set('America/Argentina/Buenos_Aires');
@@ -11,8 +15,6 @@ use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Slim\Routing\RouteContext;
 
-require_once './vendor/autoload.php';
-require_once 'database.php';
 
 require_once './models/VerificacionMW.php';
 require_once './models/AuthJWT.php';
