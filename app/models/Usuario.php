@@ -1,4 +1,5 @@
 <?php
+namespace App\Models;
 
 use \Illuminate\Database\Eloquent\Model;
 
@@ -45,7 +46,7 @@ class Usuario extends Model
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
         */
         $arrayUsuarios = Usuario::all();
-        return $arrayUsuarios->fetchAll(PDO::FETCH_CLASS, 'Usuario');
+        return $arrayUsuarios;
     }
 
     public static function obtenerRol($rol)

@@ -1,4 +1,5 @@
 <?php
+
 class AccesoDatos
 {
     private static $objAccesoDatos;
