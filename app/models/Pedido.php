@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+
 require_once './models/Producto.php';
 
 class Pedido

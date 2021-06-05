@@ -1,5 +1,5 @@
 <?
-namespace App\Models;
+
 class Log
 {
     public $id;
