@@ -1,7 +1,6 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-echo "-HOLA";
 require_once 'database.php';
 
 error_reporting(-1);
